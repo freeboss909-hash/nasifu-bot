@@ -162,13 +162,13 @@
         submitBtn.disabled = true;
 
         try {
-            // Using Supabase RPC functions to insert data via pure secure HTTPS endpoints safely
+            // Secure connection headers running on your production publishable web token
             const response = await fetch('https://supabase.co', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRyY2hzeW1tYmxqamJoaWZpeWF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjE5Mzg0MDYsImV4cCI6MjAzNzUxNDQwNn0.sb_secret_PndjhYXyzm3Ypoav3UrjzA_MvIra4ig',
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRyY2hzeW1tYmxqamJoaWZpeWF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjE5Mzg0MDYsImV4cCI6MjAzNzUxNDQwNn0.sb_secret_PndjhYXyzm3Ypoav3UrjzA_MvIra4ig',
+                    'apikey': 'sb_publishable_NdjGpE8qdeB70LFXR1fWAw_88kiu8Gu',
+                    'Authorization': 'Bearer sb_publishable_NdjGpE8qdeB70LFXR1fWAw_88kiu8Gu',
                     'Prefer': 'return=minimal'
                 },
                 body: JSON.stringify({
