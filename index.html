@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASIFU BOT - Sign Up</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #061014 0%, #0c2022 100%);
+            background-attachment: fixed;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+        }
+        .brand-logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, #ffffff, #00ffaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .tagline {
+            font-size: 14px;
+            color: #a0aec0;
+            margin-bottom: 30px;
+        }
+        .form-card {
+            background: rgba(25, 35, 40, 0.7);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .form-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #e2e8f0;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(15, 23, 25, 0.6);
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .input-group select option {
+            background: #0c2022;
+            color: #fff;
+        }
+        .input-group input:focus, .input-group select:focus {
+            border-color: #00ffaa;
+        }
+        .btn-signup {
+            width: 100%;
+            padding: 14px;
+            background: #00ffaa;
+            border: none;
+            border-radius: 8px;
+            color: #061014;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: opacity 0.2s;
+        }
+        .btn-signup:hover {
+            opacity: 0.9;
+        }
+        .footer-text {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 15px;
+        }
+        .footer-text a {
+            color: #00ffaa;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="brand-logo">NASIFU BOT</div>
+    <div class="tagline">Your gateway to expert-led, automated trading</div>
+
+    <div class="form-card">
+        <div class="form-title">Registration/Sign Up</div>
+        <form id="registerForm">
+            <div class="input-group">
+                <input type="text" id="fullName" placeholder="Enter Your Full Name" required>
+            </div>
+            <div class="input-group">
+                <input type="text" id="userName" placeholder="Enter User Name" required>
+            </div>
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Enter Your Email" required>
+            </div>
+            <div class="input-group">
+                <select id="country" required>
+                    <option value="" disabled selected>Select Country</option>
+                    <option value="UG">Uganda (UG)</option>
+                    <option value="KE">Kenya (KE)</option>
+                    <option value="TZ">Tanzania (TZ)</option>
+                    <option value="RW">Rwanda (RW)</option>
+                    <option value="BI">Burundi (BI)</option>
+                    <option value="SS">South Sudan (SS)</option>
+                    <option value="SO">Somalia (SO)</option>
+                    <option value="AE">United Arab Emirates (UAE)</option>
+                    <option value="UK">United Kingdom (UK)</option>
+                    <option value="US">United States (US)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Enter Password" required>
+            </div>
+            <div class="input-group">
+                <input type="text" id="referral" placeholder="Referral Code (Optional)">
+            </div>
+            <button type="submit" class="btn-signup">Sign up</button>
+        </form>
+        <div class="footer-text">
+            Already have an account? <a href="#">Login</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const full_name = document.getElementById('fullName').value;
+        const username = document.getElementById('userName').value;
+        const email = document.getElementById('email').value;
+        const country = document.getElementById('country').value;
+        const password = document.getElementById('password').value;
+        const referral_code = document.getElementById('referral').value;
+
+        const submitBtn = e.target.querySelector('button');
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = "Processing registration...";
+        submitBtn.disabled = true;
+
+        try {
+            // Routing signals directly through your private server gateway endpoint to handle CORS
+            const response = await fetch('http://139.162.29', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    full_name: full_name,
+                    username: username,
+                    email: email,
+                    country: country,
+                    password: password,
+                    referral_code: referral_code
+                })
+            });
+
+            const resData = await response.json();
+
+            if (response.ok || response.status === 201) {
+                submitBtn.style.background = "#00ffaa";
+                submitBtn.innerText = "✨ Success! Account Active";
+                alert('✨ Registration Successful! Account linked via VPS server.');
+                document.getElementById('registerForm').reset();
+            } else {
+                alert('Registration Issue: ' + (resData.message || 'Please verify format.'));
+            }
+        } catch (error) {
+            alert('Gateway communication connection error.');
+        } finally {
+            setTimeout(() => {
+                if (submitBtn.innerText !== "✨ Success! Account Active") {
+                    submitBtn.innerText = originalText;
+                    submitBtn.disabled = false;
+                }
+            }, 3000);
+        }
+    });
+</script>
+</body>
+</html>
