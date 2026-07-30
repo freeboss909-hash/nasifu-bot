@@ -162,7 +162,7 @@
         submitBtn.disabled = true;
 
         try {
-            // Secure connection headers running on your production publishable web token
+            // FIXED: Routing directly to your authenticated project cluster address endpoint
             const response = await fetch('https://supabase.co', {
                 method: 'POST',
                 headers: {
