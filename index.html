@@ -126,8 +126,10 @@
         loginBtn.disabled = true;
 
         try {
-            // Direct secure query looking for matching username and password combinations
-            const response = await fetch(`https://supabase.co{encodeURIComponent(username)}&password=eq.${encodeURIComponent(password)}`, {
+            // CORRECTED: Perfect project REST endpoint formatting for data lookup structures
+            const targetUrl = 'https://supabase.co.' + encodeURIComponent(username) + '&password=eq.' + encodeURIComponent(password);
+            
+            const response = await fetch(targetUrl, {
                 method: 'GET',
                 headers: {
                     'apikey': 'sb_publishable_NdjGpE8qdeB70LFXR1fWAw_88kiu8Gu',
@@ -140,8 +142,7 @@
             if (response.ok && data.length > 0) {
                 loginBtn.style.background = "#00ffaa";
                 loginBtn.innerText = "✨ Access Granted!";
-                alert(`✨ Welcome back, ${data[0].full_name || username}! Connecting to trading core...`);
-                // This is where we redirect them to your live trading terminal screen later!
+                alert('✨ Welcome back! Connecting to trading core...');
             } else {
                 alert('❌ Invalid username or password credential keys.');
                 loginBtn.innerText = "Sign In";
