@@ -3,20 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NS TRADE - Admin Access</title>
+    <title>NS TRADE - Platform Portal</title>
     <style>
         body {
             background: linear-gradient(135deg, #061014 0%, #0c2022 100%);
             background-attachment: fixed;
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
         }
-        .container {
+        
+        /* App View Container Frameworks */
+        .app-view {
+            width: 100%;
+            display: none; /* Controlled via state switches */
+            box-sizing: border-box;
+        }
+        .active-view {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* SCREEN 1: LOGIN CARD SCREEN STYLES */
+        .login-container {
             width: 100%;
             max-width: 400px;
             padding: 30px;
@@ -43,6 +59,8 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+            box-sizing: border-box;
         }
         .form-title {
             font-size: 22px;
@@ -86,6 +104,148 @@
         .btn-access:hover {
             opacity: 0.9;
         }
+
+        /* SCREEN 2: MAIN TRADING DASHBOARD DESIGNS */
+        .dashboard-container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            box-sizing: border-box;
+            align-self: flex-start;
+        }
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .dash-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .dash-title span {
+            color: #00ffaa;
+        }
+        .btn-logout {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            border: 1px solid rgba(255, 68, 68, 0.2);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-logout:hover {
+            background: rgba(255, 68, 68, 0.2);
+        }
+        
+        /* Grid Layout Matrix Modules */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+        .metric-card {
+            background: rgba(25, 35, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .metric-label {
+            font-size: 13px;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        .metric-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        .metric-value.positive {
+            color: #00ffaa;
+        }
+        .metric-sub {
+            font-size: 12px;
+            color: #4a5568;
+            margin-top: 5px;
+        }
+        .metric-sub span {
+            color: #00ffaa;
+        }
+
+        /* Control Panel Layout Elements */
+        .content-panel {
+            background: rgba(25, 35, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .panel-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .panel-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background: #00ffaa;
+            border-radius: 2px;
+        }
+        
+        /* Table Matrix Configuration Frameworks */
+        .data-table-wrapper {
+            overflow-x: auto;
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+        th {
+            color: #a0aec0;
+            font-weight: 600;
+            padding: 12px;
+            border-bottom: 2px solid #2d3748;
+        }
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+        }
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .badge-status {
+            background: rgba(0, 255, 170, 0.1);
+            color: #00ffaa;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
         .footer-text {
             font-size: 12px;
             color: #718096;
@@ -95,48 +255,60 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="brand-logo">NS TRADE</div>
-    <div class="tagline">Your gateway to expert-led, automated trading</div>
+    <!-- STAGE SCREEN 1: THE PORTAL GATEKEEPER LOCK -->
+    <div id="loginView" class="app-view active-view">
+        <div class="login-container">
+            <div class="brand-logo">NS TRADE</div>
+            <div class="tagline">Your gateway to expert-led, automated trading</div>
 
-    <div class="form-card">
-        <div class="form-title">Enter Admin Master Key</div>
-        <form id="accessForm">
-            <div class="input-group">
-                <input type="password" id="masterKey" placeholder="••••••••••••" required>
+            <div class="form-card">
+                <div class="form-title">Enter Admin Master Key</div>
+                <form id="accessForm">
+                    <div class="input-group">
+                        <input type="password" id="masterKey" placeholder="••••••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-access">Unlock Platform</button>
+                </form>
+                <div class="footer-text">
+                    Admin authenticated platform access portal.
+                </div>
             </div>
-            <button type="submit" class="btn-access">Unlock Platform</button>
-        </form>
-        <div class="footer-text">
-            Admin authenticated platform access portal.
         </div>
     </div>
-</div>
 
-<script>
-    document.getElementById('accessForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const masterKeyInput = document.getElementById('masterKey').value.trim();
-        const accessBtn = e.target.querySelector('button');
+    <!-- STAGE SCREEN 2: THE SECURE TRADING INTERIOR SYSTEM CONTAINER -->
+    <div id="dashboardView" class="app-view">
+        <div class="dashboard-container">
+            
+            <!-- System Top Bar Header Row -->
+            <div class="dash-header">
+                <div class="dash-title">NS <span>TRADE</span> Terminal</div>
+                <button class="btn-logout" onclick="lockPlatform()">🔒 Lock Terminal</button>
+            </div>
 
-        accessBtn.innerText = "Authorizing credentials...";
-        accessBtn.disabled = true;
+            <!-- Quantitative Analytics Metrics Row Layout -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Total Portfolio Value</div>
+                    <div class="metric-value">$42,750.80</div>
+                    <div class="metric-sub">Base Currency: <span>USDT</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">24h Net Profit Margin</div>
+                    <div class="metric-value positive">+$1,482.15</div>
+                    <div class="metric-sub">Growth Rate: <span>+3.58%</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Active Engine Engines</div>
+                    <div class="metric-value" style="color: #00ffaa;">3 / 3 Active</div>
+                    <div class="metric-sub">System Status: <span>Operational</span></div>
+                </div>
+            </div>
 
-        // LOCAL MASTER PASSWORD CHECK: 100% independent of external script libraries
-        if (masterKeyInput === "nasifu123") {
-            accessBtn.style.background = "#00ffaa";
-            accessBtn.innerText = "✨ Access Granted!";
-            setTimeout(() => {
-                alert('✨ Welcome to NS TRADE! Connecting to trading dashboard infrastructure...');
-            }, 100);
-        } else {
-            alert('❌ Invalid Master Security Key Passcode.');
-            accessBtn.innerText = "Unlock Platform";
-            accessBtn.disabled = false;
-            document.getElementById('masterKey').value = "";
-        }
-    });
-</script>
-</body>
-</html>
+            <!-- Real-Time Activity Tracking Engine Module -->
+            <div class="content-panel">
+                <div class="panel-title">Automated Algorithmic Execution Streams</div>
+                <div class="data-table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
