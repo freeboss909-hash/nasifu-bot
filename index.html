@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NS TRADE - Terminal</title>
     <style>
+        :root {
+            --bg-color: #060d10;
+            --sidebar-color: #091316;
+            --accent-color: #00ffaa;
+            --card-bg: rgba(20, 32, 38, 0.7);
+            --border-color: rgba(255, 255, 255, 0.03);
+        }
+
         body {
-            background: linear-gradient(135deg, #061014 0%, #0c2022 100%);
-            background-attachment: fixed;
+            background-color: var(--bg-color);
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -17,19 +24,20 @@
             justify-content: center;
             align-items: center;
         }
-        
-        /* APP GATEKEEPER LOCK STYLES */
+
+        /* APP GATEKEEPER PASSCODE STYLES */
         .login-container {
             width: 100%;
             max-width: 400px;
             padding: 30px;
             text-align: center;
+            box-sizing: border-box;
         }
         .brand-logo-gate {
             font-size: 36px;
             font-weight: bold;
             margin-bottom: 5px;
-            background: linear-gradient(to right, #ffffff, #00ffaa);
+            background: linear-gradient(to right, #ffffff, var(--accent-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 1px;
@@ -46,15 +54,11 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            box-sizing: border-box;
         }
         .form-title {
             font-size: 22px;
             margin-bottom: 20px;
             color: #e2e8f0;
-        }
-        .input-group {
-            margin-bottom: 20px;
         }
         .input-group input {
             width: 100%;
@@ -66,218 +70,249 @@
             font-size: 18px;
             box-sizing: border-box;
             outline: none;
-            transition: border-color 0.2s;
             text-align: center;
             letter-spacing: 3px;
-        }
-        .input-group input:focus {
-            border-color: #00ffaa;
+            margin-bottom: 20px;
         }
         .btn-access {
             width: 100%;
             padding: 14px;
-            background: #00ffaa;
+            background: var(--accent-color);
             border: none;
             border-radius: 8px;
             color: #061014;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        .btn-access:hover {
-            opacity: 0.9;
         }
 
-        /* CORE TERMINAL DASHBOARD STRUCTURES */
-        .dashboard-container {
+        /* SYSTEM CORE CONTAINER FRAMEWORK */
+        #appMasterContainer {
             width: 100%;
-            max-width: 1200px;
-            padding: 30px 20px;
-            box-sizing: border-box;
-            align-self: flex-start;
+            height: 100%;
         }
-        .dash-header {
+
+        .platform-wrapper {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            position: relative;
+        }
+
+        /* MOBILE SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-color);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 25px 15px;
+            box-sizing: border-box;
+        }
+        .sidebar-brand {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+        .sidebar-brand span { color: var(--accent-color); }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #e2e8f0;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+        .menu-item.active { background: rgba(0, 255, 170, 0.05); color: var(--accent-color); }
+
+        /* MAIN CONTENT AREA MATCHING YOUR APP PREVIEW */
+        .main-content {
+            flex: 1;
+            padding: 25px 20px 100px 20px; /* Extra bottom padding for mobile navbar */
+            box-sizing: border-box;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .dash-title-main {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 0 5px 0;
+            color: #ffffff;
+        }
+        .dash-subtitle {
+            font-size: 14px;
+            color: #a0aec0;
+            margin: 0 0 25px 0;
+        }
+
+        /* PREMIUM DYNAMIC GRAPHIC WALLET CARDS */
+        .wallet-card {
+            background: linear-gradient(135deg, rgba(9, 25, 30, 0.9) 0%, rgba(15, 37, 44, 0.9) 100%);
+            border: 1px solid rgba(0, 255, 170, 0.08);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        /* Network cyber aesthetic background stripes */
+        .wallet-card::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(0, 255, 170, 0.08) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+        }
+        .wallet-balance {
+            font-size: 32px;
+            font-weight: 700;
+            font-family: monospace;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+        .wallet-balance span { font-size: 16px; color: #a0aec0; font-family: 'Segoe UI'; font-weight: 600; }
+        .wallet-type {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+        .wallet-icon-box {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        /* SECTION HEADER MODULES */
+        .section-header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+            margin: 25px 0 15px 0;
+            letter-spacing: 0.5px;
+        }
+
+        /* REFRESH ICON BADGE CONTAINER */
+        .binance-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
-        .dash-title {
-            font-size: 26px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-        .dash-title span {
-            color: #00ffaa;
-        }
-        
-        /* Action Bot Command Buttons Matrix */
-        .controls-wrapper {
+        .binance-info { display: flex; align-items: center; gap: 12px; }
+        .binance-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #f3ba2f; /* Official Binance Yellow theme color */
+            border-radius: 50%;
             display: flex;
-            gap: 15px;
-            width: 100%;
-            margin-bottom: 25px;
-        }
-        .btn-control {
-            flex: 1;
-            padding: 16px;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 8px;
-            transition: transform 0.1s, opacity 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            align-items: center;
+            font-weight: bold;
+            color: #000;
         }
-        .btn-control:active {
-            transform: scale(0.98);
-        }
-        .btn-start {
-            background: linear-gradient(135deg, #00ffaa 0%, #00cc88 100%);
-            color: #061014;
-        }
-        .btn-pause {
-            background: linear-gradient(135deg, #ff4444 0%, #cc3333 100%);
-            color: #ffffff;
-        }
-        .btn-control:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
+        .binance-label { font-size: 14px; color: #a0aec0; margin-bottom: 2px; }
+        .binance-val { font-size: 20px; font-weight: bold; font-family: monospace; }
+        .refresh-btn {
+            color: var(--accent-color);
+            cursor: pointer;
+            font-size: 18px;
+            background: rgba(0, 255, 170, 0.05);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(0, 255, 170, 0.1);
         }
 
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            width: 100%;
-            margin-bottom: 25px;
+        /* FIXED FIXED BOTTOM NAVIGATION TAB BAR LINK LOCKS FOR PHONE SCREENS */
+        .mobile-navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background-color: rgba(9, 19, 22, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            padding-bottom: env(safe-area-inset-bottom); /* iOS dynamic bottom safe margin mapping support */
         }
-        .metric-card {
-            background: rgba(25, 35, 40, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
-        .metric-label {
-            font-size: 13px;
-            color: #a0aec0;
-            text-transform: uppercase;
-        }
-        .metric-value {
-            font-size: 28px;
+        .nav-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #718096;
+            text-decoration: none;
+            font-size: 11px;
             font-weight: bold;
+            cursor: pointer;
+            gap: 4px;
         }
-        .content-panel {
-            background: rgba(25, 35, 40, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 20px;
-            width: 100%;
-            box-sizing: border-box;
+        .nav-tab.active { color: var(--accent-color); }
+        .nav-tab-icon { font-size: 18px; }
+        
+        /* THE MASTER ACTION GRID HUB BUTTON TRIGGER ICON */
+        .center-hub-btn {
+            width: 56px;
+            height: 56px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #061014;
+            font-size: 22px;
+            margin-top: -30px;
+            box-shadow: 0 4px 15px rgba(0, 255, 170, 0.3);
+            border: 4px solid var(--bg-color);
+            cursor: pointer;
         }
-        .panel-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #e2e8f0;
+
+        /* RESPONSIVE RENDERING RULES */
+        @media (min-width: 769px) {
+            .mobile-navbar { display: none; }
+            .main-content { padding: 40px; }
         }
-        .data-table-wrapper {
-            overflow-x: auto;
-            width: 100%;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-        th {
-            color: #a0aec0;
-            padding: 12px;
-            border-bottom: 2px solid #2d3748;
-            text-align: left;
-        }
-        td {
-            padding: 14px 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .badge-status {
-            background: rgba(0, 255, 170, 0.1);
-            color: #00ffaa;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: bold;
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            body { align-items: flex-start; }
         }
     </style>
 </head>
 <body>
 
-    <!-- CONTAINER CONTAINER NODE FOR RUNTIME INTERFACE GENERATION -->
-    <div id="appMasterContainer" style="width: 100%; display: flex; justify-content: center; align-items: center;">
+    <div id="appMasterContainer" style="display: flex; justify-content: center; align-items: center;">
         
-        <!-- INITIAL RENDERING STAGE: THE SECURITY PROTECTION ENVELOPE -->
+        <!-- SECURITY PASS INLET LAYER MODULE -->
         <div class="login-container" id="loginWrapper">
-            <div class="brand-logo-gate">NS TRADE</div>
-            <div class="tagline">Your gateway to expert-led, automated trading</div>
-
-            <div class="form-card">
-                <div class="form-title">Enter Admin Master Key</div>
-                <div class="input-group">
-                    <input type="password" id="masterKey" placeholder="••••••••••••" autofocus>
-                </div>
-                <button class="btn-access" onclick="authenticateKey()">Unlock Platform</button>
-            </div>
-        </div>
-
-    </div>
-
-<script>
-    // Security Key Checking Engine Routine
-    function authenticateKey() {
-        const keyInput = document.getElementById('masterKey').value.trim();
-        
-        if (keyInput === "nasifu123") {
-            // STEP 1: Fully wipe out the gatekeeper form elements from memory
-            document.getElementById('appMasterContainer').innerHTML = "";
-            
-            // STEP 2: Shift body alignments upward for terminal spreadsheet layouts
-            document.body.style.alignItems = "flex-start";
-            
-            // STEP 3: Inject the complete NS TRADE workspace live into the DOM structure
-            document.getElementById('appMasterContainer').innerHTML = `
-                <div class="dashboard-container">
-                    <div class="dash-header">
-                        <div class="dash-title">NS <span>TRADE</span> Terminal</div>
-                        <div style="color: #00ffaa; font-weight: bold; font-size: 14px;">🟢 SECURITY ACTIVE</div>
-                    </div>
-
-                    <!-- NEW FEATURE: AUTOMATED BOT ACTION CONTROLS PANEL -->
-                    <div class="controls-wrapper">
-                        <button class="btn-control btn-start" id="startBotBtn" onclick="triggerBotAction('start')">🚀 Launch Algorithmic Engines</button>
-                        <button class="btn-control btn-pause" id="pauseBotBtn" onclick="triggerBotAction('pause')" disabled>⛔ Emergency Pause Engines</button>
-                    </div>
-
-                    <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-label">Total Portfolio Value</div>
-                            <div class="metric-value">$42,750.80</div>
-                            <div style="color:#718096; font-size:12px; margin-top:5px;">Base: <span style="color:#00ffaa;">USDT</span></div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">24h Net Profit Margin</div>
-                            <div class="metric-value" style="color: #00ffaa;">+$1,482.15</div>
-                            <div style="color:#718096; font-size:12px; margin-top:5px;">Growth: <span style="color:#00ffaa;">+3.58%</span></div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Active Trade Bots</div>
-                            <div class="metric-value" id="botStatusValue" style="color: #a0aec0;">0 / 3 Standby</div>
-                            <div style="color:#718096; font-size:12px; margin-top:5px;">Engine Status: <span id="engineBadgeText" style="color:#ff4444;">Paused</span></div>
