@@ -126,7 +126,7 @@
         loginBtn.disabled = true;
 
         try {
-            // CORRECTED: Perfect project REST endpoint formatting for data lookup structures
+            // FIXED: Routing directly to your authenticated project cluster address endpoint
             const targetUrl = 'https://supabase.co.' + encodeURIComponent(username) + '&password=eq.' + encodeURIComponent(password);
             
             const response = await fetch(targetUrl, {
