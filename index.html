@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NS TRADE - QR Login</title>
-    <!-- Secure, lightweight open-source HTML5 QR Code library scanner -->
-    <script src="https://unpkg.com" type="text/javascript"></script>
+    <title>NS TRADE - Admin Access</title>
     <style>
         body {
             background: linear-gradient(135deg, #061014 0%, #0c2022 100%);
@@ -20,7 +18,7 @@
         }
         .container {
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
             padding: 30px;
             text-align: center;
         }
@@ -51,47 +49,47 @@
             margin-bottom: 20px;
             color: #e2e8f0;
         }
-        #reader {
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .input-group input {
             width: 100%;
+            padding: 14px 15px;
             background: rgba(15, 23, 25, 0.6);
-            border-radius: 12px;
-            border: 2px dashed #2d3748;
-            overflow: hidden;
-            margin-bottom: 20px;
-            min-height: 100px;
-        }
-        .file-upload-wrapper {
-            margin: 15px 0;
-        }
-        .custom-file-btn {
-            background: #00ffaa;
-            color: #061014;
-            border: none;
-            padding: 12px 24px;
-            font-size: 15px;
-            font-weight: bold;
+            border: 1px solid #2d3748;
             border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
+            color: #fff;
+            font-size: 16px;
             box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        .input-group input:focus {
+            border-color: #00ffaa;
+        }
+        .btn-access {
+            width: 100%;
+            padding: 14px;
+            background: #00ffaa;
+            border: none;
+            border-radius: 8px;
+            color: #061014;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
             transition: opacity 0.2s;
         }
-        .custom-file-btn:hover {
+        .btn-access:hover {
             opacity: 0.9;
-        }
-        #qr-input-file {
-            display: none;
-        }
-        .status-text {
-            font-size: 14px;
-            color: #a0aec0;
-            margin-top: 15px;
-            line-height: 1.4;
         }
         .footer-text {
             font-size: 12px;
             color: #718096;
-            margin-top: 20px;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -102,18 +100,13 @@
     <div class="tagline">Your gateway to expert-led, automated trading</div>
 
     <div class="form-card">
-        <div class="form-title">Scan QR Pass to Enter</div>
-        
-        <!-- Camera scanning box wrapper -->
-        <div id="reader">
-            <div class="file-upload-wrapper">
-                <button class="custom-file-btn" onclick="document.getElementById('qr-input-file').click()">📂 Upload QR Pass Image</button>
-                <input type="file" id="qr-input-file" accept="image/*">
+        <div class="form-title">Enter Admin Master Key</div>
+        <form id="accessForm">
+            <div class="input-group">
+                <input type="password" id="masterKey" placeholder="••••••••••••" required>
             </div>
-        </div>
-        
-        <div id="status" class="status-text">Select your secure QR pass screenshot file or scan it to authorize device parameters.</div>
-        
+            <button type="submit" class="btn-access">Unlock Platform</button>
+        </form>
         <div class="footer-text">
             Admin authenticated platform access portal.
         </div>
@@ -121,48 +114,29 @@
 </div>
 
 <script>
-    function verifyToken(decodedText) {
-        const statusDiv = document.getElementById('status');
+    document.getElementById('accessForm').addEventListener('submit', function(e) {
+        e.preventDefault();
         
-        // SECURE MASTER AUTHENTICATION CHECK
-        if (decodedText.trim() === "NSTRADE_MASTER_ADMIN_2026_SECURE") {
-            statusDiv.innerHTML = "<span style='color: #00ffaa; font-weight: bold;'>✨ Key Token Verified!</span>";
+        const masterKeyInput = document.getElementById('masterKey').value.trim();
+        const accessBtn = e.target.querySelector('button');
+
+        accessBtn.innerText = "Authorizing credentials...";
+        accessBtn.disabled = true;
+
+        // LOCAL MASTER PASSWORD CHECK: 100% independent of external script libraries
+        if (masterKeyInput === "nasifu123") {
+            accessBtn.style.background = "#00ffaa";
+            accessBtn.innerText = "✨ Access Granted!";
             setTimeout(() => {
-                alert('✨ Access Granted! Welcome to NS TRADE. Loading trading infrastructure...');
+                alert('✨ Welcome to NS TRADE! Connecting to trading dashboard infrastructure...');
             }, 100);
         } else {
-            statusDiv.innerHTML = "<span style='color: #ff4444; font-weight: bold;'>❌ Invalid Verification Code Pass Key.</span>";
-            alert('❌ Invalid QR Code security pass key.');
+            alert('❌ Invalid Master Security Key Passcode.');
+            accessBtn.innerText = "Unlock Platform";
+            accessBtn.disabled = false;
+            document.getElementById('masterKey').value = "";
         }
-    }
-
-    // Initialize File-based local image scanning mechanics
-    const html5QrCode = new Html5Qrcode("reader");
-    const fileInput = document.getElementById('qr-input-file');
-    
-    fileInput.addEventListener('change', e => {
-        if (e.target.files.length == 0) return;
-        
-        const imageFile = e.target.files[0];
-        const statusDiv = document.getElementById('status');
-        statusDiv.innerText = "Analyzing file graphic layers...";
-
-        html5QrCode.scanFile(imageFile, true)
-        .then(decodedText => {
-            verifyToken(decodedText);
-        })
-        .catch(err => {
-            statusDiv.innerHTML = "<span style='color: #ffaa00;'>⚠️ Scanner could not decode image block. Make sure the QR is clear.</span>";
-        });
     });
-
-    // Attempt to start camera scanner inside the container card layout
-    try {
-        let html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: { width: 250, height: 250 } }, false);
-        html5QrcodeScanner.render((text) => verifyToken(text), () => {});
-    } catch(e) {
-        // Fallback gracefully to file handling upload modes if camera drivers fail to mount
-    }
 </script>
 </body>
 </html>
