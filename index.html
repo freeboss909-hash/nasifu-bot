@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NS TRADE - Platform Portal</title>
+    <title>NS TRADE - Terminal</title>
     <style>
         body {
             background: linear-gradient(135deg, #061014 0%, #0c2022 100%);
@@ -15,103 +15,14 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
         }
         
-        /* App View Container Frameworks */
-        .app-view {
-            width: 100%;
-            display: none; /* Controlled via state switches */
-            box-sizing: border-box;
-        }
-        .active-view {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* SCREEN 1: LOGIN CARD SCREEN STYLES */
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 30px;
-            text-align: center;
-        }
-        .brand-logo {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            background: linear-gradient(to right, #ffffff, #00ffaa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-        }
-        .tagline {
-            font-size: 14px;
-            color: #a0aec0;
-            margin-bottom: 30px;
-        }
-        .form-card {
-            background: rgba(25, 35, 40, 0.7);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .form-title {
-            font-size: 22px;
-            margin-bottom: 20px;
-            color: #e2e8f0;
-        }
-        .input-group {
-            margin-bottom: 15px;
-            position: relative;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 14px 15px;
-            background: rgba(15, 23, 25, 0.6);
-            border: 1px solid #2d3748;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 16px;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.2s;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-        .input-group input:focus {
-            border-color: #00ffaa;
-        }
-        .btn-access {
-            width: 100%;
-            padding: 14px;
-            background: #00ffaa;
-            border: none;
-            border-radius: 8px;
-            color: #061014;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: opacity 0.2s;
-        }
-        .btn-access:hover {
-            opacity: 0.9;
-        }
-
-        /* SCREEN 2: MAIN TRADING DASHBOARD DESIGNS */
         .dashboard-container {
             width: 100%;
             max-width: 1200px;
-            padding: 20px;
+            padding: 30px 20px;
             box-sizing: border-box;
-            align-self: flex-start;
         }
         .dash-header {
             display: flex;
@@ -133,21 +44,32 @@
         .dash-title span {
             color: #00ffaa;
         }
-        .btn-logout {
-            background: rgba(255, 68, 68, 0.1);
-            color: #ff4444;
-            border: 1px solid rgba(255, 68, 68, 0.2);
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #00ffaa;
+            background: rgba(0, 255, 170, 0.05);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 170, 0.1);
+            font-weight: 600;
         }
-        .btn-logout:hover {
-            background: rgba(255, 68, 68, 0.2);
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00ffaa;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(0, 255, 170, 0.7);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 170, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(0, 255, 170, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 170, 0); }
         }
         
-        /* Grid Layout Matrix Modules */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -161,6 +83,7 @@
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(8px);
         }
         .metric-label {
             font-size: 13px;
@@ -179,14 +102,13 @@
         }
         .metric-sub {
             font-size: 12px;
-            color: #4a5568;
+            color: #718096;
             margin-top: 5px;
         }
         .metric-sub span {
             color: #00ffaa;
         }
 
-        /* Control Panel Layout Elements */
         .content-panel {
             background: rgba(25, 35, 40, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -194,6 +116,7 @@
             padding: 20px;
             width: 100%;
             box-sizing: border-box;
+            backdrop-filter: blur(8px);
         }
         .panel-title {
             font-size: 18px;
@@ -213,7 +136,6 @@
             border-radius: 2px;
         }
         
-        /* Table Matrix Configuration Frameworks */
         .data-table-wrapper {
             overflow-x: auto;
             width: 100%;
@@ -246,69 +168,86 @@
             font-size: 12px;
             font-weight: bold;
         }
-        .footer-text {
-            font-size: 12px;
-            color: #718096;
-            margin-top: 15px;
-        }
     </style>
 </head>
 <body>
 
-    <!-- STAGE SCREEN 1: THE PORTAL GATEKEEPER LOCK -->
-    <div id="loginView" class="app-view active-view">
-        <div class="login-container">
-            <div class="brand-logo">NS TRADE</div>
-            <div class="tagline">Your gateway to expert-led, automated trading</div>
-
-            <div class="form-card">
-                <div class="form-title">Enter Admin Master Key</div>
-                <form id="accessForm">
-                    <div class="input-group">
-                        <input type="password" id="masterKey" placeholder="••••••••••••" required>
-                    </div>
-                    <button type="submit" class="btn-access">Unlock Platform</button>
-                </form>
-                <div class="footer-text">
-                    Admin authenticated platform access portal.
-                </div>
+    <div class="dashboard-container">
+        
+        <!-- System Top Bar Header Row -->
+        <div class="dash-header">
+            <div class="dash-title">NS <span>TRADE</span> Terminal</div>
+            <div class="live-indicator">
+                <div class="pulse-dot"></div>
+                CORE ENGINE LIVE
             </div>
         </div>
+
+        <!-- Quantitative Analytics Metrics Row Layout -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Total Portfolio Value</div>
+                <div class="metric-value">$42,750.80</div>
+                <div class="metric-sub">Base Currency: <span>USDT</span></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">24h Net Profit Margin</div>
+                <div class="metric-value positive">+$1,482.15</div>
+                <div class="metric-sub">Growth Rate: <span>+3.58%</span></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Active Trade Bots</div>
+                <div class="metric-value" style="color: #00ffaa;">3 / 3 Running</div>
+                <div class="metric-sub">System Status: <span>Operational</span></div>
+            </div>
+        </div>
+
+        <!-- Real-Time Activity Tracking Engine Module -->
+        <div class="content-panel">
+            <div class="panel-title">Automated Algorithmic Execution Streams</div>
+            <div class="data-table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Trading Engine Pair</th>
+                            <th>Execution Type</th>
+                            <th>Strategy Metric Matrix</th>
+                            <th>Execution Value</th>
+                            <th>Status Pipeline</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2026-08-03 16:31:05</td>
+                            <td style="font-weight: bold; color: #fff;">BTC / USDT</td>
+                            <td style="color: #00ffaa; font-weight: bold;">BUY (Long)</td>
+                            <td>Moving Avg Crossover</td>
+                            <td>0.25 BTC</td>
+                            <td><span class="badge-status">COMPLETED</span></td>
+                        </tr>
+                        <tr>
+                            <td>2026-08-03 14:19:04</td>
+                            <td style="font-weight: bold; color: #fff;">ETH / USDT</td>
+                            <td style="color: #ff4444; font-weight: bold;">SELL (Short)</td>
+                            <td>RSI Overbought Pullback</td>
+                            <td>1.80 ETH</td>
+                            <td><span class="badge-status">COMPLETED</span></td>
+                        </tr>
+                        <tr>
+                            <td>2026-08-03 11:05:52</td>
+                            <td style="font-weight: bold; color: #fff;">SOL / USDT</td>
+                            <td style="color: #00ffaa; font-weight: bold;">BUY (Long)</td>
+                            <td>Support Level Liquidity Bounce</td>
+                            <td>14.50 SOL</td>
+                            <td><span class="badge-status">COMPLETED</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
-    <!-- STAGE SCREEN 2: THE SECURE TRADING INTERIOR SYSTEM CONTAINER -->
-    <div id="dashboardView" class="app-view">
-        <div class="dashboard-container">
-            
-            <!-- System Top Bar Header Row -->
-            <div class="dash-header">
-                <div class="dash-title">NS <span>TRADE</span> Terminal</div>
-                <button class="btn-logout" onclick="lockPlatform()">🔒 Lock Terminal</button>
-            </div>
-
-            <!-- Quantitative Analytics Metrics Row Layout -->
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-label">Total Portfolio Value</div>
-                    <div class="metric-value">$42,750.80</div>
-                    <div class="metric-sub">Base Currency: <span>USDT</span></div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">24h Net Profit Margin</div>
-                    <div class="metric-value positive">+$1,482.15</div>
-                    <div class="metric-sub">Growth Rate: <span>+3.58%</span></div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">Active Engine Engines</div>
-                    <div class="metric-value" style="color: #00ffaa;">3 / 3 Active</div>
-                    <div class="metric-sub">System Status: <span>Operational</span></div>
-                </div>
-            </div>
-
-            <!-- Real-Time Activity Tracking Engine Module -->
-            <div class="content-panel">
-                <div class="panel-title">Automated Algorithmic Execution Streams</div>
-                <div class="data-table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
+</body>
+</html>
