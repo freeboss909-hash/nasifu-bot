@@ -142,7 +142,7 @@
 
     <div id="appMasterContainer" style="display: flex; justify-content: center; align-items: center; width: 100%;">
         
-        <!-- INTRO STAGE: CYBER TOUCH PAD NUMBER GATE -->
+        <!-- CYBER TOUCH PAD NUMBER GATE -->
         <div class="pin-container" id="pinGateWrapper">
             <div class="brand-logo-gate">NS TRADE</div>
             <div class="tagline">Expert-Led Algorithmic Quant Terminal</div>
@@ -168,16 +168,18 @@
     </div>
 
 <script>
-    let currentPinString = "";
-    const displayElement = document.getElementById('pinOutput');
+    var currentPinString = "";
+    var displayElement = document.getElementById('pinOutput');
 
-    // Keypad entry parser functions
     function pressPin(digit) {
         if (currentPinString.length >= 6) return;
         currentPinString += digit;
         
-        // Render inputs disguised as protected secure bullets
-        displayElement.innerText = "•".repeat(currentPinString.length) + "-".repeat(6 - currentPinString.length);
+        var bullets = "";
+        for (var i = 0; i < currentPinString.length; i++) { bullets += "•"; }
+        for (var j = currentPinString.length; j < 6; j++) { bullets += "-"; }
+        
+        displayElement.innerText = bullets;
     }
 
     function clearPin() {
@@ -185,29 +187,27 @@
         displayElement.innerText = "------";
     }
 
-    // LOCAL MULTI-USER PIN VALIDATION MECHANICS
     function verifyPin() {
-        let assignedUser = "";
+        var assignedUser = "";
         
         if (currentPinString === "112233") { assignedUser = "Nasifu (Admin)"; }
         else if (currentPinString === "445566") { assignedUser = "Trader Friend Alpha"; }
         else if (currentPinString === "778899") { assignedUser = "Trader Friend Beta"; }
 
         if (assignedUser !== "") {
-            // Unmount pin elements from browser DOM execution memory layout
-            document.getElementById('appMasterContainer').innerHTML = "";
             document.body.style.alignItems = "flex-start";
             
-            // Reconstruct the framework live into the screen grid matching your blueprint targets
-            document.getElementById('appMasterContainer').innerHTML = `
-                <div class="platform-wrapper">
-                    <div class="sidebar">
-                        <div class="sidebar-brand">NS <span>TRADE</span></div>
-                        <div class="menu-item active">🔳 Dashboard</div>
-                        <div class="menu-item">📈 Algo Streams</div>
-                        <div class="menu-item">💼 Wallets</div>
-                        <button class="logout-btn" onclick="location.reload()">🔒 Lock Terminal</button>
-                    </div>
-
-                    <div class="main-content">
-                        <h1 class="dash-title-main">Dashboard</h1>
+            // Traditional string joining (+) ensures absolute error-free execution across all engines
+            var dashboardHtml = "" + 
+                "<div class='platform-wrapper'>" +
+                    "<div class='sidebar'>" +
+                        "<div class='sidebar-brand'>NS <span>TRADE</span></div>" +
+                        "<div class='menu-item active'>🔳 Dashboard</div>" +
+                        "<div class='menu-item'>📈 Algo Streams</div>" +
+                        "<div class='menu-item'>💼 Wallets</div>" +
+                        "<button class='logout-btn' onclick='location.reload()'>🔒 Lock Terminal</button>" +
+                    "</div>" +
+                    "<div class='main-content'>" +
+                        "<h1 class='dash-title-main'>Dashboard</h1>" +
+                        "<p class='dash-subtitle'>Welcome back, <span style='color:var(--accent-color); font-weight:bold;'>" + assignedUser + "</span></p>" +
+                        "<div class='controls-wrapper'>" +
