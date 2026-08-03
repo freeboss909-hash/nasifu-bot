@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NS TRADE - Network Core</title>
+    <title>NS TRADE - Network Terminal</title>
     <style>
         :root {
             --bg-color: #060d10;
@@ -25,58 +25,114 @@
             align-items: center;
         }
 
-        /* CLIENT PORTAL AUTHENTICATION SHIELD LAYOUTS */
-        .auth-container {
+        /* 6-DIGIT PIN GATEKEEPER DISPLAY */
+        .pin-container {
             width: 100%;
-            max-width: 420px;
-            padding: 25px;
+            max-width: 360px;
+            padding: 20px;
+            text-align: center;
             box-sizing: border-box;
         }
-        .brand-header { text-align: center; margin-bottom: 25px; }
-        .brand-logo { font-size: 36px; font-weight: 800; background: linear-gradient(to right, #ffffff, var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; }
-        .brand-tag { font-size: 13px; color: #a0aec0; margin-top: 4px; }
-        .auth-card { background: rgba(25, 35, 40, 0.65); border-radius: 16px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.04); box-shadow: 0 10px 30px rgba(0,0,0,0.4); backdrop-filter: blur(10px); }
-        .auth-toggle { display: flex; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 4px; margin-bottom: 20px; }
-        .toggle-btn { flex: 1; padding: 10px; background: none; border: none; color: #718096; font-weight: bold; cursor: pointer; border-radius: 6px; font-size: 14px; }
-        .toggle-btn.active { background: var(--accent-color); color: #061014; }
-        .form-view { display: none; }
-        .form-view.active-view { display: block; }
-        .input-group { margin-bottom: 15px; }
-        .input-group input, .input-group select { width: 100%; padding: 12px 15px; background: rgba(10, 18, 22, 0.7); border: 1px solid #2d3748; border-radius: 8px; color: #fff; font-size: 14px; box-sizing: border-box; outline: none; }
-        .auth-submit-btn { width: 100%; padding: 14px; background: var(--accent-color); border: none; border-radius: 8px; color: #061014; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 5px; }
+        .brand-logo-gate {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+        .tagline {
+            font-size: 13px;
+            color: #a0aec0;
+            margin-bottom: 30px;
+        }
+        .pin-display-wrapper {
+            background: rgba(15, 23, 25, 0.6);
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 32px;
+            font-family: monospace;
+            letter-spacing: 6px;
+            color: var(--accent-color);
+            margin-bottom: 25px;
+            min-height: 38px;
+        }
+        .pin-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .pin-btn {
+            background: rgba(25, 35, 40, 0.7);
+            border: 1px solid rgba(255,255,255,0.03);
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .pin-btn:active { background: var(--accent-color); color: #000; }
+        .pin-btn.clear { color: #ff4444; font-size: 18px; }
 
-        /* LIVE SYSTEM DESKTOP/MOBILE WORKSPACE STRUCTURES */
-        .platform-wrapper { display: flex; width: 100%; min-height: 100vh; background-color: var(--bg-color); }
-        .sidebar { width: 280px; background-color: var(--sidebar-color); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 25px 15px; box-sizing: border-box; }
+        /* LIVE SYSTEM CONTAINER FRAMEWORK */
+        #appMasterContainer { width: 100%; height: 100%; }
+        .platform-wrapper { display: flex; width: 100%; min-height: 100vh; background-color: var(--bg-color); position: relative; }
+
+        /* SIDEBAR SYSTEM HOUSING */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-color);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 25px 15px;
+            box-sizing: border-box;
+        }
         .sidebar-brand { font-size: 26px; font-weight: 800; letter-spacing: 1px; margin-bottom: 40px; padding-left: 10px; }
         .sidebar-brand span { color: var(--accent-color); }
-        .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; color: #e2e8f0; font-size: 15px; font-weight: 600; border-radius: 8px; margin-bottom: 6px; }
+        .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; color: #e2e8f0; font-size: 15px; font-weight: 600; border-radius: 8px; margin-bottom: 8px; }
         .menu-item.active { background: rgba(0, 255, 170, 0.05); color: var(--accent-color); }
         .logout-btn { margin-top: auto; background: rgba(255, 68, 68, 0.08); color: #ff4444; border: 1px solid rgba(255, 68, 68, 0.15); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        .main-content { flex: 1; padding: 40px 25px 100px 25px; box-sizing: border-box; overflow-y: auto; }
-        .user-greeting { font-size: 24px; font-weight: bold; margin: 0 0 5px 0; }
-        .user-subtext { font-size: 14px; color: #a0aec0; margin: 0 0 25px 0; }
+        /* MAIN DASHBOARD MATRIX */
+        .main-content { flex: 1; padding: 40px 20px 100px 20px; box-sizing: border-box; max-width: 100%; overflow-x: hidden; }
+        .dash-title-main { font-size: 28px; font-weight: bold; margin: 0 0 5px 0; }
+        .dash-subtitle { font-size: 14px; color: #a0aec0; margin: 0 0 30px 0; }
 
-        .wallet-card { background: linear-gradient(135deg, rgba(9, 25, 30, 0.9) 0%, rgba(15, 37, 44, 0.9) 100%); border: 1px solid rgba(0, 255, 170, 0.06); border-radius: 14px; padding: 20px; margin-bottom: 15px; }
-        .wallet-balance { font-size: 30px; font-weight: 700; font-family: monospace; margin-bottom: 8px; }
-        .wallet-balance span { font-size: 15px; color: #a0aec0; }
-        .wallet-type { font-size: 14px; font-weight: 600; color: #e2e8f0; display: flex; align-items: center; gap: 8px; }
+        /* BOT CONTROL COMMAND PACK */
+        .controls-wrapper { display: flex; gap: 15px; margin-bottom: 25px; }
+        .btn-control { flex: 1; padding: 16px; border: none; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.2s; }
+        .btn-start { background: linear-gradient(135deg, #00ffaa 0%, #00cc88 100%); color: #061014; }
+        .btn-pause { background: linear-gradient(135deg, #ff4444 0%, #cc3333 100%); color: #ffffff; }
+        .btn-control:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        .section-header { font-size: 18px; font-weight: bold; margin: 25px 0 15px 0; }
+        /* PREMIUM METRIC WALLET CARDS */
+        .wallet-card {
+            background: linear-gradient(135deg, rgba(9, 25, 30, 0.9) 0%, rgba(15, 37, 44, 0.9) 100%);
+            border: 1px solid rgba(0, 255, 170, 0.08);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        .wallet-balance { font-size: 32px; font-weight: 700; font-family: monospace; margin-bottom: 12px; }
+        .wallet-balance span { font-size: 16px; color: #a0aec0; }
+        .wallet-type { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; color: #e2e8f0; }
+
+        .section-header { font-size: 18px; font-weight: bold; margin: 30px 0 15px 0; }
+        
         .api-config-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.04); border-radius: 14px; padding: 20px; margin-bottom: 25px; }
-        .api-status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 15px; }
-
-        .execution-panel { background: var(--sidebar-color); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
-        th { color: #a0aec0; padding: 10px; border-bottom: 2px solid #2d3748; }
-        td { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .api-status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 15px; background: rgba(255,170,0,0.1); color: #ffaa00; }
 
         .mobile-navbar { display: none; }
         @media (max-width: 768px) {
             .sidebar { display: none; }
-            .main-content { padding: 25px 15px 90px 15px; }
-            .mobile-navbar { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: var(--sidebar-color); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
+            .mobile-navbar { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background-color: var(--sidebar-color); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
             .nav-tab { display: flex; flex-direction: column; align-items: center; color: #718096; font-size: 11px; font-weight: bold; }
             .nav-tab.active { color: var(--accent-color); }
         }
@@ -84,80 +140,74 @@
 </head>
 <body>
 
-    <div id="runtimeAppContainer" style="width: 100%;">
+    <div id="appMasterContainer" style="display: flex; justify-content: center; align-items: center; width: 100%;">
         
-        <!-- SECURE PASS ENTRY ATTRACTION CELL SHIELD -->
-        <div class="auth-container" id="authInterfaceWindow" style="margin: 0 auto;">
-            <div class="brand-header">
-                <div class="brand-logo">NS TRADE</div>
-                <div class="brand-tag">Expert-Led Algorithmic Asset Maximization</div>
-            </div>
-
-            <div class="auth-card">
-                <div class="auth-toggle">
-                    <button class="toggle-btn active" id="toggleLoginBtn" onclick="shiftAuthMode('login')">Sign In</button>
-                    <button class="toggle-btn" id="toggleRegisterBtn" onclick="shiftAuthMode('register')">Register</button>
-                </div>
-
-                <div id="loginFormWrapper" class="form-view active-view">
-                    <form id="terminalLoginForm">
-                        <div class="input-group">
-                            <input type="text" id="logUser" placeholder="Username" required>
-                        </div>
-                        <div class="input-group">
-                            <input type="password" id="logPass" placeholder="Secret Password" required>
-                        </div>
-                        <button type="submit" class="auth-submit-btn">Access Secure Terminal</button>
-                    </form>
-                </div>
-
-                <div id="registerFormWrapper" class="form-view">
-                    <form id="terminalRegisterForm">
-                        <div class="input-group">
-                            <input type="text" id="regName" placeholder="Full Name" required>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" id="regUser" placeholder="Choose Unique Username" required>
-                        </div>
-                        <div class="input-group">
-                            <select id="regCountry" required>
-                                <option value="" disabled selected>Select Region</option>
-                                <option value="Uganda">Uganda (UG)</option>
-                                <option value="Kenya">Kenya (KE)</option>
-                                <option value="Tanzania">Tanzania (TZ)</option>
-                                <option value="United Arab Emirates">UAE</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <input type="password" id="regPass" placeholder="Create Secret Password" required>
-                        </div>
-                        <button type="submit" class="auth-submit-btn" style="background:#00ffaa;">Create Active Profile</button>
-                    </form>
-                </div>
+        <!-- INTRO STAGE: CYBER TOUCH PAD NUMBER GATE -->
+        <div class="pin-container" id="pinGateWrapper">
+            <div class="brand-logo-gate">NS TRADE</div>
+            <div class="tagline">Expert-Led Algorithmic Quant Terminal</div>
+            
+            <div class="pin-display-wrapper" id="pinOutput">------</div>
+            
+            <div class="pin-grid">
+                <button class="pin-btn" onclick="pressPin('1')">1</button>
+                <button class="pin-btn" onclick="pressPin('2')">2</button>
+                <button class="pin-btn" onclick="pressPin('3')">3</button>
+                <button class="pin-btn" onclick="pressPin('4')">4</button>
+                <button class="pin-btn" onclick="pressPin('5')">5</button>
+                <button class="pin-btn" onclick="pressPin('6')">6</button>
+                <button class="pin-btn" onclick="pressPin('7')">7</button>
+                <button class="pin-btn" onclick="pressPin('8')">8</button>
+                <button class="pin-btn" onclick="pressPin('9')">9</button>
+                <button class="pin-btn clear" onclick="clearPin()">CLEAR</button>
+                <button class="pin-btn" onclick="pressPin('0')">0</button>
+                <button class="pin-btn" style="color:var(--accent-color);" onclick="verifyPin()">ENTER</button>
             </div>
         </div>
 
-<script>
-    const dbEndpoint = 'https://supabase.co';
-    const clientKey = 'sb_publishable_NdjGpE8qdeB70LFXR1fWAw_88kiu8Gu';
+    </div>
 
-    function shiftAuthMode(mode) {
-        document.getElementById('toggleLoginBtn').classList.toggle('active', mode === 'login');
-        document.getElementById('toggleRegisterBtn').classList.toggle('active', mode === 'register');
-        document.getElementById('loginFormWrapper').classList.toggle('active-view', mode === 'login');
-        document.getElementById('registerFormWrapper').classList.toggle('active-view', mode === 'register');
+<script>
+    let currentPinString = "";
+    const displayElement = document.getElementById('pinOutput');
+
+    // Keypad entry parser functions
+    function pressPin(digit) {
+        if (currentPinString.length >= 6) return;
+        currentPinString += digit;
+        
+        // Render inputs disguised as protected secure bullets
+        displayElement.innerText = "•".repeat(currentPinString.length) + "-".repeat(6 - currentPinString.length);
     }
 
-    // REGISTRATION FORM SUBMIT MECHANISM
-    document.getElementById('terminalRegisterForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const submitBtn = e.target.querySelector('button');
-        submitBtn.innerText = "Provisioning account nodes...";
-        submitBtn.disabled = true;
+    function clearPin() {
+        currentPinString = "";
+        displayElement.innerText = "------";
+    }
 
-        try {
-            const response = await fetch(dbEndpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'apikey': clientKey, 'Authorization': 'Bearer ' + clientKey, 'Prefer': 'return=minimal' },
-                body: JSON.stringify({
-                    full_name: document.getElementById('regName').value,
+    // LOCAL MULTI-USER PIN VALIDATION MECHANICS
+    function verifyPin() {
+        let assignedUser = "";
+        
+        if (currentPinString === "112233") { assignedUser = "Nasifu (Admin)"; }
+        else if (currentPinString === "445566") { assignedUser = "Trader Friend Alpha"; }
+        else if (currentPinString === "778899") { assignedUser = "Trader Friend Beta"; }
+
+        if (assignedUser !== "") {
+            // Unmount pin elements from browser DOM execution memory layout
+            document.getElementById('appMasterContainer').innerHTML = "";
+            document.body.style.alignItems = "flex-start";
+            
+            // Reconstruct the framework live into the screen grid matching your blueprint targets
+            document.getElementById('appMasterContainer').innerHTML = `
+                <div class="platform-wrapper">
+                    <div class="sidebar">
+                        <div class="sidebar-brand">NS <span>TRADE</span></div>
+                        <div class="menu-item active">🔳 Dashboard</div>
+                        <div class="menu-item">📈 Algo Streams</div>
+                        <div class="menu-item">💼 Wallets</div>
+                        <button class="logout-btn" onclick="location.reload()">🔒 Lock Terminal</button>
+                    </div>
+
+                    <div class="main-content">
+                        <h1 class="dash-title-main">Dashboard</h1>
