@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NS TRADE - Live Quant Terminal</title>
+    <title>NS TRADE - Network Core</title>
     <style>
         :root {
             --bg-color: #060d10;
@@ -25,106 +25,29 @@
             align-items: center;
         }
 
-        /* MASTER AUTH PANEL WRAPPERS */
+        /* CLIENT PORTAL AUTHENTICATION SHIELD LAYOUTS */
         .auth-container {
             width: 100%;
             max-width: 420px;
             padding: 25px;
             box-sizing: border-box;
         }
-        .brand-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .brand-logo {
-            font-size: 36px;
-            font-weight: 800;
-            background: linear-gradient(to right, #ffffff, var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-        }
+        .brand-header { text-align: center; margin-bottom: 25px; }
+        .brand-logo { font-size: 36px; font-weight: 800; background: linear-gradient(to right, #ffffff, var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; }
         .brand-tag { font-size: 13px; color: #a0aec0; margin-top: 4px; }
-        
-        .auth-card {
-            background: rgba(25, 35, 40, 0.65);
-            border-radius: 16px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            backdrop-filter: blur(10px);
-        }
-        .auth-toggle {
-            display: flex;
-            background: rgba(0,0,0,0.3);
-            border-radius: 8px;
-            padding: 4px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.02);
-        }
-        .toggle-btn {
-            flex: 1;
-            padding: 10px;
-            background: none;
-            border: none;
-            color: #718096;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 6px;
-            font-size: 14px;
-        }
+        .auth-card { background: rgba(25, 35, 40, 0.65); border-radius: 16px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.04); box-shadow: 0 10px 30px rgba(0,0,0,0.4); backdrop-filter: blur(10px); }
+        .auth-toggle { display: flex; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 4px; margin-bottom: 20px; }
+        .toggle-btn { flex: 1; padding: 10px; background: none; border: none; color: #718096; font-weight: bold; cursor: pointer; border-radius: 6px; font-size: 14px; }
         .toggle-btn.active { background: var(--accent-color); color: #061014; }
-        
         .form-view { display: none; }
         .form-view.active-view { display: block; }
-        
         .input-group { margin-bottom: 15px; }
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(10, 18, 22, 0.7);
-            border: 1px solid #2d3748;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 14px;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        .input-group input:focus, .input-group select:focus { border-color: var(--accent-color); }
-        .input-group select option { background: var(--sidebar-color); color: #fff; }
-        
-        .auth-submit-btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--accent-color);
-            border: none;
-            border-radius: 8px;
-            color: #061014;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            margin-top: 5px;
-        }
-        .auth-submit-btn:hover { opacity: 0.9; }
+        .input-group input, .input-group select { width: 100%; padding: 12px 15px; background: rgba(10, 18, 22, 0.7); border: 1px solid #2d3748; border-radius: 8px; color: #fff; font-size: 14px; box-sizing: border-box; outline: none; }
+        .auth-submit-btn { width: 100%; padding: 14px; background: var(--accent-color); border: none; border-radius: 8px; color: #061014; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 5px; }
 
-        /* PRODUCTION WORKSPACE CORE */
-        .platform-wrapper {
-            display: flex;
-            width: 100%;
-            min-height: 100vh;
-            background-color: var(--bg-color);
-        }
-        .sidebar {
-            width: 280px;
-            background-color: var(--sidebar-color);
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            padding: 25px 15px;
-            box-sizing: border-box;
-        }
+        /* LIVE SYSTEM DESKTOP/MOBILE WORKSPACE STRUCTURES */
+        .platform-wrapper { display: flex; width: 100%; min-height: 100vh; background-color: var(--bg-color); }
+        .sidebar { width: 280px; background-color: var(--sidebar-color); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 25px 15px; box-sizing: border-box; }
         .sidebar-brand { font-size: 26px; font-weight: 800; letter-spacing: 1px; margin-bottom: 40px; padding-left: 10px; }
         .sidebar-brand span { color: var(--accent-color); }
         .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; color: #e2e8f0; font-size: 15px; font-weight: 600; border-radius: 8px; margin-bottom: 6px; }
@@ -135,35 +58,14 @@
         .user-greeting { font-size: 24px; font-weight: bold; margin: 0 0 5px 0; }
         .user-subtext { font-size: 14px; color: #a0aec0; margin: 0 0 25px 0; }
 
-        /* PLATFORM CONTROL & WALLET CARDS */
-        .wallet-card {
-            background: linear-gradient(135deg, rgba(9, 25, 30, 0.9) 0%, rgba(15, 37, 44, 0.9) 100%);
-            border: 1px solid rgba(0, 255, 170, 0.06);
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
+        .wallet-card { background: linear-gradient(135deg, rgba(9, 25, 30, 0.9) 0%, rgba(15, 37, 44, 0.9) 100%); border: 1px solid rgba(0, 255, 170, 0.06); border-radius: 14px; padding: 20px; margin-bottom: 15px; }
         .wallet-balance { font-size: 30px; font-weight: 700; font-family: monospace; margin-bottom: 8px; }
-        .wallet-balance span { font-size: 15px; color: #a0aec0; font-family: 'Segoe UI'; }
+        .wallet-balance span { font-size: 15px; color: #a0aec0; }
         .wallet-type { font-size: 14px; font-weight: 600; color: #e2e8f0; display: flex; align-items: center; gap: 8px; }
 
         .section-header { font-size: 18px; font-weight: bold; margin: 25px 0 15px 0; }
-        
-        .api-config-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.04);
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 25px;
-        }
-        .api-status-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
+        .api-config-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.04); border-radius: 14px; padding: 20px; margin-bottom: 25px; }
+        .api-status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 15px; }
 
         .execution-panel { background: var(--sidebar-color); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; }
         table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
@@ -184,7 +86,7 @@
 
     <div id="runtimeAppContainer" style="width: 100%;">
         
-        <!-- GATEWAY STAGE: PORTAL AUTHENTICATION SHIELD -->
+        <!-- SECURE PASS ENTRY ATTRACTION CELL SHIELD -->
         <div class="auth-container" id="authInterfaceWindow" style="margin: 0 auto;">
             <div class="brand-header">
                 <div class="brand-logo">NS TRADE</div>
@@ -197,7 +99,6 @@
                     <button class="toggle-btn" id="toggleRegisterBtn" onclick="shiftAuthMode('register')">Register</button>
                 </div>
 
-                <!-- FORM ELEMENT 1: LOGIN FRAME -->
                 <div id="loginFormWrapper" class="form-view active-view">
                     <form id="terminalLoginForm">
                         <div class="input-group">
@@ -210,7 +111,6 @@
                     </form>
                 </div>
 
-                <!-- FORM ELEMENT 2: REGISTRATION FRAME -->
                 <div id="registerFormWrapper" class="form-view">
                     <form id="terminalRegisterForm">
                         <div class="input-group">
@@ -226,7 +126,38 @@
                                 <option value="Kenya">Kenya (KE)</option>
                                 <option value="Tanzania">Tanzania (TZ)</option>
                                 <option value="United Arab Emirates">UAE</option>
-                                <option value="United Kingdom">United Kingdom (UK)</option>
                             </select>
                         </div>
                         <div class="input-group">
+                            <input type="password" id="regPass" placeholder="Create Secret Password" required>
+                        </div>
+                        <button type="submit" class="auth-submit-btn" style="background:#00ffaa;">Create Active Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+<script>
+    const dbEndpoint = 'https://supabase.co';
+    const clientKey = 'sb_publishable_NdjGpE8qdeB70LFXR1fWAw_88kiu8Gu';
+
+    function shiftAuthMode(mode) {
+        document.getElementById('toggleLoginBtn').classList.toggle('active', mode === 'login');
+        document.getElementById('toggleRegisterBtn').classList.toggle('active', mode === 'register');
+        document.getElementById('loginFormWrapper').classList.toggle('active-view', mode === 'login');
+        document.getElementById('registerFormWrapper').classList.toggle('active-view', mode === 'register');
+    }
+
+    // REGISTRATION FORM SUBMIT MECHANISM
+    document.getElementById('terminalRegisterForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const submitBtn = e.target.querySelector('button');
+        submitBtn.innerText = "Provisioning account nodes...";
+        submitBtn.disabled = true;
+
+        try {
+            const response = await fetch(dbEndpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'apikey': clientKey, 'Authorization': 'Bearer ' + clientKey, 'Prefer': 'return=minimal' },
+                body: JSON.stringify({
+                    full_name: document.getElementById('regName').value,
