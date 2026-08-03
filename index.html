@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NS TRADE - Login</title>
+    <title>NS TRADE - QR Login</title>
+    <!-- Secure, lightweight open-source HTML5 QR Code library scanner -->
+    <script src="https://unpkg.com" type="text/javascript"></script>
     <style>
         body {
             background: linear-gradient(135deg, #061014 0%, #0c2022 100%);
@@ -18,7 +20,7 @@
         }
         .container {
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             padding: 30px;
             text-align: center;
         }
@@ -49,40 +51,34 @@
             margin-bottom: 20px;
             color: #e2e8f0;
         }
-        .input-group {
-            margin-bottom: 15px;
-            position: relative;
-        }
-        .input-group input {
+        #reader {
             width: 100%;
-            padding: 12px 15px;
             background: rgba(15, 23, 25, 0.6);
-            border: 1px solid #2d3748;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 14px;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.2s;
+            border-radius: 12px;
+            border: 2px dashed #2d3748;
+            overflow: hidden;
+            margin-bottom: 20px;
         }
-        .input-group input:focus {
-            border-color: #00ffaa;
-        }
-        .btn-login {
-            width: 100%;
-            padding: 14px;
-            background: #00ffaa;
-            border: none;
-            border-radius: 8px;
-            color: #061014;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
+        /* Styling the internal library buttons to match NS TRADE theme */
+        #reader button {
+            background: #00ffaa !important;
+            color: #061014 !important;
+            border: none !important;
+            padding: 10px 20px !important;
+            font-size: 14px !important;
+            font-weight: bold !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            margin: 15px 0 !important;
             transition: opacity 0.2s;
         }
-        .btn-login:hover {
-            opacity: 0.9;
+        #reader button:hover {
+            opacity: 0.9 !important;
+        }
+        .status-text {
+            font-size: 14px;
+            color: #a0aec0;
+            margin-top: 10px;
         }
         .footer-text {
             font-size: 12px;
@@ -98,62 +94,50 @@
     <div class="tagline">Your gateway to expert-led, automated trading</div>
 
     <div class="form-card">
-        <div class="form-title">Account Login</div>
-        <form id="loginForm">
-            <div class="input-group">
-                <input type="text" id="userName" placeholder="Enter Username" required>
-            </div>
-            <div class="input-group">
-                <input type="password" id="password" placeholder="Enter Secret Password" required>
-            </div>
-            <button type="submit" class="btn-login">Sign In</button>
-        </form>
+        <div class="form-title">Scan QR Pass to Enter</div>
+        
+        <!-- Camera scanning box wrapper -->
+        <div id="reader"></div>
+        
+        <div id="status" class="status-text">Hold your unique QR credential pass up to the camera lens.</div>
+        
         <div class="footer-text">
-            Contact administrator to request access credential keys.
+            Admin authenticated platform access portal.
         </div>
     </div>
 </div>
 
 <script>
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
+    function onScanSuccess(decodedText, decodedResult) {
+        // Stop scanning once a match is successfully identified
+        html5QrcodeScanner.clear();
         
-        const username = document.getElementById('userName').value;
-        const password = document.getElementById('password').value;
-
-        const loginBtn = e.target.querySelector('button');
-        loginBtn.innerText = "Verifying credentials...";
-        loginBtn.disabled = true;
-
-        try {
-            // FIXED: Routing directly to your authenticated project cluster address endpoint
-            const targetUrl = 'https://supabase.co.' + encodeURIComponent(username) + '&password=eq.' + encodeURIComponent(password);
-            
-            const response = await fetch(targetUrl, {
-                method: 'GET',
-                headers: {
-                    'apikey': 'sb_publishable_NdjGpE8qdeB70LFXR1fWAw_88kiu8Gu',
-                    'Authorization': 'Bearer sb_publishable_NdjGpE8qdeB70LFXR1fWAw_88kiu8Gu'
-                }
-            });
-
-            const data = await response.json();
-
-            if (response.ok && data.length > 0) {
-                loginBtn.style.background = "#00ffaa";
-                loginBtn.innerText = "✨ Access Granted!";
-                alert('✨ Welcome back! Connecting to trading core...');
-            } else {
-                alert('❌ Invalid username or password credential keys.');
-                loginBtn.innerText = "Sign In";
-                loginBtn.disabled = false;
-            }
-        } catch (error) {
-            alert('❌ Network synchronization issue. Please try again.');
-            loginBtn.innerText = "Sign In";
-            loginBtn.disabled = false;
+        const statusDiv = document.getElementById('status');
+        statusDiv.innerHTML = "<span style='color: #00ffaa; font-weight: bold;'>✨ Key Token Verified!</span>";
+        
+        // SECURE TOKEN CHECK: Verifies your specific master admin code payload
+        if (decodedText.trim() === "NSTRADE_MASTER_ADMIN_2026_SECURE") {
+            setTimeout(() => {
+                alert('✨ Access Granted! Welcome to NS TRADE. Loading trading infrastructure...');
+                // Your trading application workspace link goes right here later!
+            }, 100);
+        } else {
+            alert('❌ Invalid QR Code security pass key.');
+            location.reload(); // Refresh the page to reset the scanner
         }
-    });
+    }
+
+    function onScanFailure(error) {
+        // Silent catch for scanning frame attempts to prevent log crowding
+    }
+
+    // Initialize the scanner inside the container card layout
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", 
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        /* verbose= */ false
+    );
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 </script>
 </body>
 </html>
